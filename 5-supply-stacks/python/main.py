@@ -49,6 +49,14 @@ def process_line(stacks, line) -> Stacks:
     stacks[key_to] += vals
     return stacks
 
+def process_line_part2(stacks, line) -> Stacks:
+    res = re.split("move|from|to", line)
+    num_move, key_from, key_to = [i.strip() for i in res if i.strip()]
+    num_move = int(num_move)
+    vals = [stacks[key_from].pop() for _ in range(num_move)][-1::-1]
+    stacks[key_to] += vals
+    return stacks
+
 def process_stacks(stacks) -> str:
     res = []
     for _, v in stacks.items():
@@ -70,7 +78,15 @@ def part1(file):
     return process_stacks(stacks_final)
 
 def part2(file):
-    ...
+    "crates stay in the same order"
+    lines = read_data(file)
+    stacks = next(lines)
+    # stacks is mutable and not concurrent because its state
+    # depends on each line
+
+    # dict is mutable
+    stacks_final = reduce(lambda tot, line: process_line_part2(tot, line), lines, stacks)
+    return process_stacks(stacks_final)
 
 def main():
     lines = read_data(TESTDATA)
@@ -81,11 +97,11 @@ def main():
     res = part1(DATA)
     print("Part 1:", res)
 
-    # res = part2(TESTDATA)
-    # assert res == 4, f"res is {res}"
-    # print("Part 2 test:", res)
-    # res = part2(DATA)
-    # print("Part 2:", res)
+    res = part2(TESTDATA)
+    assert res == "MCD", f"res is {res}"
+    print("Part 2 test:", res)
+    res = part2(DATA)
+    print("Part 2:", res)
 
 if __name__ == "__main__":
     main()
