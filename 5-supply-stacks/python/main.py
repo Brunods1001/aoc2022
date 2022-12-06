@@ -1,7 +1,7 @@
 from functools import reduce
 from pathlib import Path
 import re
-from typing import Generator, Tuple
+from typing import Generator
 
 TESTDATA = Path(__file__).parent.parent / "test_data.txt"
 DATA = Path(__file__).parent.parent / "data.txt"
@@ -89,8 +89,6 @@ def part2(file):
     return process_stacks(stacks_final)
 
 def main():
-    lines = read_data(TESTDATA)
-    stacks = next(lines)
     res = part1(TESTDATA)
     assert res == "CMZ", f"res is {res}"
     print("Part 1 test:", res)
